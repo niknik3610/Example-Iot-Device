@@ -1,0 +1,8 @@
+device_name = "Hello device"
+server_ip = "https://10.30.9.143:2302"
+
+[capability."Turn Off"]
+    available = true
+
+[capability."Turn On"]
+    available = true
