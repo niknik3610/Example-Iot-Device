@@ -7,7 +7,8 @@ use NOSHP_Client::{
 
 #[derive(Default)]
 struct ExampleState {
-    text: String,
+    pub text: String,
+    pub current_brightness_lvl: u32
 }
 impl UserDefinedState for ExampleState {}
 
@@ -24,13 +25,17 @@ async fn main() -> Result<(), Box<dyn Error>> {
         }
     };
 
+    println!("Device: {}", config.device_name);
+
     let client_handler = NoshpClient::new();
     client_handler
         .set_state(ExampleState {
             text: String::from("hello world"),
+            current_brightness_lvl: 50,
         })
         .add_callback("Turn On", Box::new(turn_on_led))
         .add_callback("Turn Off", Box::new(turn_off_led))
+        .add_callback("Brightness", Box::new(handle_brightness))
         .run(config)
         .await
         .unwrap();
@@ -38,10 +43,22 @@ async fn main() -> Result<(), Box<dyn Error>> {
     return Ok(());
 }
 
-fn turn_on_led(state: &mut ClientState<ExampleState>, req: Request) {
-    println!("turned on led")
+fn turn_on_led(state: &mut ClientState<ExampleState>, _req: Request) {
+    state.update_capability_availabillity("Turn On", false).unwrap();
+    state.update_capability_availabillity("Turn Off", true).unwrap();
+    state.user_state.text = String::from("Turned On");
+
+    println!("State: {}", state.user_state.text);
 }
 
-fn turn_off_led(state: &mut ClientState<ExampleState>, req: Request) {
-    println!("turned off led")
+fn turn_off_led(state: &mut ClientState<ExampleState>, _req: Request) {
+    state.update_capability_availabillity("Turn On", true).unwrap();
+    state.update_capability_availabillity("Turn Off", false).unwrap();
+    state.user_state.text = String::from("Turned Off");
+    println!("State: {}", state.user_state.text);
+}
+
+fn handle_brightness(state: &mut ClientState<ExampleState>, req: Request) {
+    let new_brightness = req.value.unwrap();
+    state.user_state.current_brightness_lvl = new_brightness as u32;
 }

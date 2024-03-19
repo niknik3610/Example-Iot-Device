@@ -6,5 +6,5 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-NOSHP-Client = {path="/home/nik/dev/IoT_Platform/client_library"}
+NOSHP-Client = "0.3.1"
 tokio = "1.35.1"

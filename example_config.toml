@@ -1,8 +1,14 @@
 device_name = "Hello device"
-server_ip = "https://10.30.9.143:2302"
+server_ip = "https://10.30.8.245:2302"
 
 [capability."Turn Off"]
-    available = true
+    available = false
+    type = "button"
 
 [capability."Turn On"]
     available = true
+    type = "button"
+
+[capability."Brightness"]
+    available = true
+    type = "slider"
