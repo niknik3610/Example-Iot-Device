@@ -61,4 +61,5 @@ fn turn_off_led(state: &mut ClientState<ExampleState>, _req: Request) {
 fn handle_brightness(state: &mut ClientState<ExampleState>, req: Request) {
     let new_brightness = req.value.unwrap();
     state.user_state.current_brightness_lvl = new_brightness as u32;
+    println!("New Brightness: {}", state.user_state.current_brightness_lvl);
 }
